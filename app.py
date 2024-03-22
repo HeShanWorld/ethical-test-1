@@ -25,24 +25,29 @@ def main():
         conn.close()
     return (render_template("main.html",name=name))
 
+@app.route("/delete",methods = ["GET","POST"])
+def delete():
+        conn = sqlite3.connect("log.db")
+        c= conn.cursor()
+        c.execute("delete from employee;")
+        conn.commit()
+        c.close()
+        conn.close()
+        return (render_template("delete.html"))
 
 @app.route("/ethical_test",methods = ["GET","POST"])
 def ethical_test():
 
     return(render_template("ethical_test.html"))
 
-@app.route("/query",methods = ["GET","POST"])
-def query():
-        conn = sqlite3.connect("log.db")
-        c = conn.execute("select * from employee")
-        r=""
-        for row in c:
-            r = r+str(row)+"<br>"
-        print(r)
-        r = Markup(r)
-        c.close()
-        conn.close()
-        return (render_template("query.html",r = r))
+@app.route("/prediction",methods = ["GET","POST"])
+def prediction():
+    income = float(request.form.get("income"))
+    return (render_template("prediction.html",r = (income*0.485)+147))
+
+@app.route("/food_exp",methods = ["GET","POST"])
+def food_exp():
+    return (render_template("food_exp.html"))
 
 @app.route("/answer",methods = ["GET","POST"])
 def answer():
